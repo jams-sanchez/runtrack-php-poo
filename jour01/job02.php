@@ -12,12 +12,13 @@ class Operation
         $this->nombre2 = $nombre2;
     }
 
-    function nombres()
+    function addition()
     {
-        $result = "le nombre 1 est $this->nombre1 et le nombre 2 est $this->nombre2";
+        $addition = $this->nombre1 + $this->nombre2;
+        $result = "le résultat de l'addition du nombre $this->nombre1 et du nombre $this->nombre2 est de $addition";
         return $result;
     }
 }
 
 $operation = new Operation(5, 3);
-echo ($operation->nombres());
+echo ($operation->addition());
