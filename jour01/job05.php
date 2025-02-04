@@ -33,4 +33,6 @@ class Animal
 $animal = new Animal();
 echo ($animal->afficheAge());
 echo "<br>" . ($animal->vieillir());
+echo "<br>" . ($animal->vieillir());
+echo "<br>" . ($animal->vieillir());
 echo "<br>" . ($animal->nommer('Jack'));
