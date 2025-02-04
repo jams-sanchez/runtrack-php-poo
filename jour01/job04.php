@@ -43,34 +43,10 @@ class Point
 
 $result = new Point();
 echo $result->afficherLesPoints();
-
-echo "<br>";
-echo "<br>";
-
-echo $result->afficherX();
-
-echo "<br>";
-
-echo $result->changerX(10);
-
-echo "<br>";
-
-echo $result->afficherX();
-
-echo "<br>";
-echo "<br>";
-
-echo $result->afficherY();
-
-echo "<br>";
-
-echo $result->changerY(20);
-
-echo "<br>";
-
-echo $result->afficherY();
-
-echo "<br>";
-echo "<br>";
-
-echo $result->afficherLesPoints();
+echo "<br><br>" . $result->afficherX();
+echo "<br>" . $result->changerX(10);
+echo "<br>" . $result->afficherX();
+echo "<br><br>" .  $result->afficherY();
+echo "<br>" . $result->changerY(20);
+echo "<br>" . $result->afficherY();
+echo "<br><br>" . $result->afficherLesPoints();
