@@ -16,6 +16,19 @@ class Produit
         $this->prixTTC = $prixTTC;
     }
 
+    public function afficheNom(): string
+    {
+        return $this->nom;
+    }
+    public function affichePrixHT(): string
+    {
+        return $this->prixHT;
+    }
+    public function afficheTVA(): string
+    {
+        return $this->TVA;
+    }
+
     public function changerNom(string $newNom): string
     {
         $this->nom = $newNom;
@@ -51,18 +64,26 @@ class Produit
     }
 }
 
+
+echo "PRODUIT 1 : <br>";
 $produit1 = new Produit();
-// change le nom du produit
+// change le nom du produit et affiche
 $produit1->changerNom("Table");
-// change son prix HT 
+// change son prix HT et affiche
 $produit1->changerPrixHT(23.50);
-// change la TVA
+// change la TVA et affiche
 $produit1->changerTVA(20);
-// calcule le prix TTC
+// calcule le prix TTC et affiche
 $produit1->calculerPrixTTC();
 // affiche toutes les informations du produit
-echo $produit1->afficher();
+echo "<br>" . $produit1->afficher();
+echo "<br><br> PRODUIT 1 après modification: <br>";
+$produit1->changerNom("Chaise");
+$produit1->changerPrixHT(18.50);
+$produit1->calculerPrixTTC();
+echo "<br>" . $produit1->afficher();
 
+echo "<br><br><br> PRODUIT 2 :";
 $produit2 = new Produit();
 $produit2->changerNom('Yaourt');
 $produit2->changerPrixHT(2);
