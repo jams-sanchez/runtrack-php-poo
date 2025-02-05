@@ -54,25 +54,29 @@ class Eleve extends Personne
 
 // Créer une classe Professeur 
 
-class Professeur
+class Professeur extends Personne
 {
 
     // avec un attribut privé matiereEnseignee
-    private string $matiereEnseignee = "";
+    private string $matiereEnseignee;
 
-    public function __construct(string $matiereEnseignee)
+    public function __construct(string $matiereEnseignee, int $age)
     {
         $this->matiereEnseignee = $matiereEnseignee;
+        parent::__construct($age);
     }
 
     // Créer une méthode publique enseigner() qui affiche 'Le cours va commencer'
     public function enseigner(): string
     {
-        return "Le cours va commencer";
+        return "Le cours $this->matiereEnseignee va commencer";
     }
 }
 
-
+// Instancier une classe Personne est une classe Eleve
 $personne = new Personne();
 $eleve = new Eleve();
+
+// Afficher l'âge par défaut de l'élève
 echo $eleve->afficherAge();
+echo "<br><br><br>";
