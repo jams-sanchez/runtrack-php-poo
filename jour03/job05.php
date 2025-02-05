@@ -24,5 +24,6 @@ class Cercle extends Forme
     }
 }
 
+// affiche le resultat de la méthode aire() pour le cercle
 $cercle = new Cercle(12);
 echo "<br> L'aire de ce cercle est de: " . $cercle->aire();

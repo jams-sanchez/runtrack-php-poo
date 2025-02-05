@@ -33,6 +33,6 @@ class Rectangle extends Forme
     }
 }
 
-// afficher le resultat de la méthode aire()
+// afficher le resultat de la méthode aire() pour le rectangle
 $rectangle = new Rectangle(10, 20);
 echo "L'aire de ce rectangle est de : " . $rectangle->aire();
