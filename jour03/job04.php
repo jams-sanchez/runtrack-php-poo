@@ -5,7 +5,7 @@
 class Forme
 {
 
-    public function aire(): int
+    public function aire(): int | float
     {
         return 0;
     }
@@ -27,7 +27,7 @@ class Rectangle extends Forme
     }
 
     // surcharger la méthode aire() dans la classe Rectangle afin qu'elle renvoie l'aire du rectangle
-    public function aire(): int
+    public function aire(): int | float
     {
         return $this->largeur * $this->longueur;
     }
@@ -35,4 +35,4 @@ class Rectangle extends Forme
 
 // afficher le resultat de la méthode aire()
 $rectangle = new Rectangle(10, 20);
-echo "l'aire du rectangle est de : " . $rectangle->aire();
+echo "L'aire de ce rectangle est de : " . $rectangle->aire();
