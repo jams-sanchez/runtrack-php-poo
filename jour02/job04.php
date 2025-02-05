@@ -39,14 +39,14 @@ class Student
         return "Crédits : $this->credits";
     }
 
-    public function getStudentEval(): string
+    public function getStudentEval()
     {
         return $this->studentEval();
     }
 
     public function getLevel(): string
     {
-        $this->level = $this->getStudentEval();
+        $this->getStudentEval();
         return "Niveau : $this->level";
     }
 
@@ -54,15 +54,10 @@ class Student
 
     public function studentInfo(): string
     {
-        $nomEtudiant = $this->getNom();
-        $prenomEtudiant = $this->getPrenom();
-        $numEtudiant = $this->getNumero();
-        $levelEtudiant = $this->getLevel();
-
-        return "$nomEtudiant 
-        <br> $prenomEtudiant
-        <br> $numEtudiant
-        <br> $levelEtudiant";
+        return $this->getNom() .
+            "<br>" . $this->getPrenom() .
+            "<br>" . $this->getNumero() .
+            "<br>" . $this->getLevel();
     }
 
     // ajoute des crédits
@@ -77,19 +72,18 @@ class Student
 
     // évaluation étudiant
 
-    private function studentEval(): string
+    private function studentEval()
     {
-
         if ($this->credits >= 90) {
-            return "Excellent!";
+            $this->level = "Excellent";
         } elseif ($this->credits >= 80) {
-            return "Très Bien";
+            $this->level = "Très Bien";
         } elseif ($this->credits >= 70) {
-            return "Bien";
+            $this->level = "Bien";
         } elseif ($this->credits >= 60) {
-            return "Passable";
+            $this->level = "Passable";
         } elseif ($this->credits < 60) {
-            return "Insuffisant";
+            $this->level = "Insuffisant";
         }
     }
 }
@@ -99,7 +93,7 @@ echo $etudiant->getNom();
 echo "<br>" . $etudiant->getPrenom();
 echo "<br>" . $etudiant->getNumero();
 echo "<br>" . $etudiant->addCredits(6.5);
-$etudiant->addCredits(6);
-$etudiant->addCredits(28);
+$etudiant->addCredits(2);
+$etudiant->addCredits(60);
 echo "<br>" . $etudiant->getCredits();
 echo "<br><br>" . $etudiant->studentInfo();
