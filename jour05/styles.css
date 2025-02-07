@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+form {
+    text-align: center;
+}
+
+#case {
+    width: 5rem;
+    padding: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    margin:0.2rem;
+}
+
+#rejouer {
+    padding: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    margin:0.2rem;
+}
+
+.msg {
+    font-size: 1.5rem;
+    color: red;
+}
+
