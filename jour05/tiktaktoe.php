@@ -20,14 +20,8 @@ class Jeu
     {
         $this->grille = $grille =
             array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-        if (!isset($_SESSION['grille'])) {
-            $_SESSION['grille'] = $this->grille;
-        }
         $this->joueur = $joueur;
-        $this->tour = $tour = 0;
-        if (!isset($_SESSION['tour'])) {
-            $_SESSION['tour'] = $this->tour;
-        }
+        $this->tour = $tour = 1;
         $this->message = $message = "";
         $this->erreur = $erreur = "";
         $this->verif = $verif = false;
@@ -36,18 +30,21 @@ class Jeu
     // nombre de tour
     public function numTour(): int
     {
-        if (!isset($_SESSION['joueur'])) {
-            $_SESSION['joueur'] = $this->joueur;
+        // unset($_GET['rejouer']);
+        $_SESSION['joueur'] = $this->joueur;
+        if (isset($_SESSION['tour'])) {
+            $_SESSION['tour'] += 1;
+            $this->tour = $_SESSION['tour'];
+            return $this->tour;
+        } else {
+            return $_SESSION['tour'] = $this->tour;
         }
-
-        $_SESSION['tour'] += 1;
-        $this->tour = $_SESSION['tour'];
-        return $this->tour;
     }
 
     // changement joueur
     public function joueurSymbole(): string
     {
+        $_SESSION['joueur'] = $this->joueur;
         if ($this->joueur == 'X') {
             if ($this->tour % 2 == 0) {
                 $this->joueur = "X";
@@ -71,7 +68,7 @@ class Jeu
 
     public function placement(): void
     {
-        if (!empty($_POST)) {
+        if (isset($_SESSION['grille'])) {
 
             $valuePost = array_key_first($_POST);
 
@@ -80,9 +77,11 @@ class Jeu
                 $this->grille = $_SESSION['grille'];
             } else {
                 $this->erreur = "choisir une autre case";
-                $this->tour--;
-                $_SESSION['tour'] = $this->tour;
+                $_SESSION['tour'] -= 1;
+                $this->tour = $_SESSION['tour'];
             }
+        } else {
+            $_SESSION['grille'] = $this->grille;
         }
     }
 
