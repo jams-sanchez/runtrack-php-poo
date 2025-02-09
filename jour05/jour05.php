@@ -15,9 +15,9 @@ class Jeu
     public function __construct(string $joueur)
     {
         $this->grille = $grille =
-            array('-', '-', '-', '-', '-', '-', '-', '-', '-');
+            array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
         $this->joueur = $joueur;
-        $this->tour = $tour = 0;
+        $this->tour = $tour = 1;
         $this->message = $message = "";
         $this->erreur = $erreur = "";
         $this->verif = $verif = false;
@@ -26,12 +26,14 @@ class Jeu
     // nombre de tour
     public function numTour(): int
     {
-        if (isset($_POST) and isset($_SESSION['tour'])) {
+        // unset($_GET['rejouer']);
+        $_SESSION['joueur'] = $this->joueur;
+        if (isset($_SESSION['tour'])) {
             $_SESSION['tour'] += 1;
             $this->tour = $_SESSION['tour'];
             return $this->tour;
         } else {
-            return $_SESSION['tour'] = 1;
+            return $_SESSION['tour'] = $this->tour;
         }
     }
 
@@ -41,15 +43,19 @@ class Jeu
         $_SESSION['joueur'] = $this->joueur;
         if ($this->joueur == 'X') {
             if ($this->tour % 2 == 0) {
-                return $this->joueur = "X";
+                $this->joueur = "X";
+                return $_SESSION['joueur'] = $this->joueur;
             } else {
-                return $this->joueur = "O";
+                $this->joueur = "O";
+                return $_SESSION['joueur'] = $this->joueur;
             }
         } else {
             if ($this->tour % 2 == 0) {
-                return $this->joueur = "O";
+                $this->joueur = "O";
+                return $_SESSION['joueur'] = $this->joueur;
             } else {
-                return $this->joueur = "X";
+                $this->joueur = "X";
+                return $_SESSION['joueur'] = $this->joueur;
             }
         }
     }
@@ -62,12 +68,13 @@ class Jeu
 
             $valuePost = array_key_first($_POST);
 
-            if ($_SESSION['grille'][$valuePost - 1] == '-') {
+            if ($_SESSION['grille'][$valuePost - 1] == ' ') {
                 $_SESSION['grille'][$valuePost - 1] = $this->joueurSymbole();
                 $this->grille = $_SESSION['grille'];
             } else {
-                $this->message = "choisir une autre case";
+                $this->erreur = "choisir une autre case";
                 $_SESSION['tour'] -= 1;
+                $this->tour = $_SESSION['tour'];
             }
         } else {
             $_SESSION['grille'] = $this->grille;
@@ -84,78 +91,93 @@ class Jeu
             $_SESSION['grille'][2] == $this->joueur
         ) {
             $this->message = $this->joueur . " a gagné !";
-            return true;
+            return $this->verif = true;
         } elseif (
             $_SESSION['grille'][3] == $this->joueur &&
             $_SESSION['grille'][4] == $this->joueur &&
             $_SESSION['grille'][5] == $this->joueur
         ) {
             $this->message = $this->joueur . " a gagné !";
-            return true;
+            return $this->verif = true;
         } elseif (
             $_SESSION['grille'][6] == $this->joueur &&
             $_SESSION['grille'][7] == $this->joueur &&
             $_SESSION['grille'][8] == $this->joueur
         ) {
             $this->message = $this->joueur . " a gagné !";
-            return true;
+            return $this->verif = true;
         } elseif ( // verif colonne
             $_SESSION['grille'][0] == $this->joueur &&
             $_SESSION['grille'][3] == $this->joueur &&
             $_SESSION['grille'][6] == $this->joueur
         ) {
             $this->message = $this->joueur . " a gagné !";
-            return true;
+            return $this->verif = true;
         } elseif (
             $_SESSION['grille'][1] == $this->joueur &&
             $_SESSION['grille'][4] == $this->joueur &&
             $_SESSION['grille'][7] == $this->joueur
         ) {
             $this->message = $this->joueur . " a gagné !";
-            return true;
+            return $this->verif = true;
         } elseif (
             $_SESSION['grille'][2] == $this->joueur &&
             $_SESSION['grille'][5] == $this->joueur &&
             $_SESSION['grille'][8] == $this->joueur
         ) {
             $this->message = $this->joueur . " a gagné !";
-            return true;
+            return $this->verif = true;
         } elseif ( // verif diagonal
             $_SESSION['grille'][0] == $this->joueur &&
             $_SESSION['grille'][4] == $this->joueur &&
             $_SESSION['grille'][8] == $this->joueur
         ) {
             $this->message = $this->joueur . " a gagné !";
-            return true;
+            return $this->verif = true;
         } elseif (
             $_SESSION['grille'][2] == $this->joueur &&
             $_SESSION['grille'][4] == $this->joueur &&
             $_SESSION['grille'][6] == $this->joueur
         ) {
             $this->message = $this->joueur . " a gagné !";
-            return true;
+            return $this->verif = true;
         } elseif ($this->tour > count($this->grille) - 1) { // verif égalité
             for ($i = 0; $i < count($this->grille); $i++) {
                 if ($_SESSION['grille'][$i] != "-") {
                     $this->message = "Egalité";
-                    return true;
+                    return $this->verif = true;
                 }
             }
         } else {
-            return false;
+            return $this->verif = false;
         }
+    }
+
+    // methode rejouer
+    public function rejouer()
+    {
+        if (isset($_GET['rejouer'])) {
+            session_destroy();
+            header("Location: jour05.php");
+        }
+    }
+
+    // deroulement jeu
+    public function jouer()
+    {
+        $this->numTour();
+        $this->placement();
+        $this->verification();
+        $this->rejouer();
     }
 }
 
 $jeu = new Jeu("X");
-echo "num tour : " . $jeu->numTour();
-$jeu->placement();
-$jeu->verification();
-echo "<br><br>";
-echo var_dump($_POST);
-echo var_dump($_SESSION['grille']);
-
-
+$jeu->jouer();
+// echo "<br><br>";
+// echo "post" . var_dump($_POST);
+// echo var_dump($_SESSION);
+// echo var_dump($_POST);
 
 echo "<br><br>";
 ?>
@@ -172,24 +194,77 @@ echo "<br><br>";
 
 <body>
 
-    <form method="post" action="jour05.php">
+    <section class="game">
+        <?php if ($jeu->verif == false): ?>
+            <div>
+                <p class="tour">
+                    Numéro tour : <span><?= $jeu->tour ?></span>
+                </p>
+                <?php if (empty($jeu->erreur)): ?>
+                    <?php if ($_SESSION['joueur'] == "X" and $jeu->tour > 1): ?>
+                        <h1 class="joueur2">O a vous de jouer !</h1>
+                    <?php else: ?>
+                        <h1 class="joueur1">X a vous de jouer !</h1>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <p class="msg"><?= $jeu->erreur ?></p>
+                <?php endif; ?>
 
-        <?php for ($i = 1; $i <= 9; $i++): ?>
-            <input id="case" type="submit" name="<?= $i; ?>" value="<?= $_SESSION['grille'][$i - 1] ?>">
-            <?php if ($i % 3 == 0) : ?>
-                <br>
-            <?php endif; ?>
-        <?php endfor; ?>
 
-        <?php if (!empty($jeu->message)): ?>
-            <p class="msg"><?= $jeu->message ?></p>
-            <input type="submit" id="rejouer" name="rejouer" value="Rejouer">
+            </div>
+
+            <table>
+                <thead></thead>
+                <tbody>
+
+                    <form method="post" action="">
+                        <?php for ($i = 1; $i <= 9; $i++): ?>
+                            <td>
+                                <input id="case" type="submit" name="<?= $i; ?>" value="<?= $_SESSION['grille'][$i - 1] ?>">
+                            </td>
+                            <?php if ($i % 3 == 0) : ?>
+                                <tr>
+                                </tr>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                    </form>
+                </tbody>
+            </table>
+
+        <?php else : ?>
+            <form method="get" action="">
+
+                <div>
+                    <?php if (!empty($jeu->message)): ?>
+                        <p class="msg"><?= $jeu->message ?></p>
+                    <?php endif; ?>
+                    <input type="submit" id="rejouer" name="rejouer" value="Rejouer">
+                </div>
+            </form>
+            <table>
+                <thead></thead>
+                <tbody>
+
+                    <form method="post" action="">
+                        <?php for ($i = 1; $i <= 9; $i++): ?>
+                            <td>
+                                <p id="case" class="case"><?= $_SESSION['grille'][$i - 1] ?></p>
+                            </td>
+                            <?php if ($i % 3 == 0) : ?>
+                                <tr>
+                                </tr>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+
+
+                    </form>
+                </tbody>
+            </table>
+
+
         <?php endif; ?>
-        <?php if (!empty($jeu->erreur)): ?>
-            <p class="msg"><?= $jeu->erreur ?></p>
-        <?php endif; ?>
 
-    </form>
+    </section>
 
 </body>
 
