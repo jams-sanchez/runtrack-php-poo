@@ -141,7 +141,7 @@ class Jeu
         ) {
             $this->message = $this->joueur . " a gagné !";
             return $this->verif = true;
-        } elseif ($this->tour > count($this->grille) - 1) { // verif égalité
+        } elseif ($this->tour > count($this->grille)) { // verif égalité
             for ($i = 0; $i < count($this->grille); $i++) {
                 if ($_SESSION['grille'][$i] != "-") {
                     $this->message = "Egalité";
@@ -154,7 +154,7 @@ class Jeu
     }
 
     // methode rejouer
-    public function rejouer()
+    public function rejouer(): void
     {
         if (isset($_GET['rejouer'])) {
             session_destroy();
@@ -163,7 +163,7 @@ class Jeu
     }
 
     // deroulement jeu
-    public function jouer()
+    public function jouer(): void
     {
         $this->numTour();
         $this->placement();
@@ -179,11 +179,10 @@ $jeu->jouer();
 // echo var_dump($_SESSION);
 // echo var_dump($_POST);
 
-echo "<br><br>";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -193,79 +192,81 @@ echo "<br><br>";
 </head>
 
 <body>
-
-    <section class="game">
-        <?php if ($jeu->verif == false): ?>
-            <div>
-                <p class="tour">
-                    Numéro tour : <span><?= $jeu->tour ?></span>
-                </p>
-                <?php if (empty($jeu->erreur)): ?>
-                    <?php if ($_SESSION['joueur'] == "X" and $jeu->tour > 1): ?>
-                        <h1 class="joueur2">O a vous de jouer !</h1>
-                    <?php else: ?>
-                        <h1 class="joueur1">X a vous de jouer !</h1>
-                    <?php endif; ?>
-                <?php else : ?>
-                    <p class="msg"><?= $jeu->erreur ?></p>
-                <?php endif; ?>
-
-
-            </div>
-
-            <table>
-                <thead></thead>
-                <tbody>
-
-                    <form method="post" action="">
-                        <?php for ($i = 1; $i <= 9; $i++): ?>
-                            <td>
-                                <input id="case" type="submit" name="<?= $i; ?>" value="<?= $_SESSION['grille'][$i - 1] ?>">
-                            </td>
-                            <?php if ($i % 3 == 0) : ?>
-                                <tr>
-                                </tr>
-                            <?php endif; ?>
-                        <?php endfor; ?>
-                    </form>
-                </tbody>
-            </table>
-
-        <?php else : ?>
-            <form method="get" action="">
-
+    <main>
+        <section class="game">
+            <?php if ($jeu->verif == false): ?>
                 <div>
-                    <?php if (!empty($jeu->message)): ?>
-                        <p class="msg"><?= $jeu->message ?></p>
+                    <p class="tour">
+                        Numéro tour : <span><?= $jeu->tour ?></span>
+                    </p>
+                    <?php if (empty($jeu->erreur)): ?>
+                        <?php if ($_SESSION['joueur'] == "X" and $jeu->tour > 1): ?>
+                            <h1 class="joueur2">Joueur O </h1>
+                            <p class="joueur2">c'est à vous de jouer !</p>
+                        <?php else: ?>
+                            <h1 class="joueur1">Joueur X </h1>
+                            <p class="joueur1">c'est à vous de jouer !</p>
+                        <?php endif; ?>
+                    <?php else : ?>
+                        <p class="msg"><?= $jeu->erreur ?></p>
                     <?php endif; ?>
-                    <input type="submit" id="rejouer" name="rejouer" value="Rejouer">
+
+
                 </div>
-            </form>
-            <table>
-                <thead></thead>
-                <tbody>
 
-                    <form method="post" action="">
-                        <?php for ($i = 1; $i <= 9; $i++): ?>
-                            <td>
-                                <p id="case" class="case"><?= $_SESSION['grille'][$i - 1] ?></p>
-                            </td>
-                            <?php if ($i % 3 == 0) : ?>
-                                <tr>
-                                </tr>
-                            <?php endif; ?>
-                        <?php endfor; ?>
+                <table>
+                    <thead></thead>
+                    <tbody>
+
+                        <form method="post" action="">
+                            <?php for ($i = 1; $i <= 9; $i++): ?>
+                                <td>
+                                    <input id="case" type="submit" name="<?= $i; ?>" value="<?= $_SESSION['grille'][$i - 1] ?>">
+                                </td>
+                                <?php if ($i % 3 == 0) : ?>
+                                    <tr>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endfor; ?>
+                        </form>
+                    </tbody>
+                </table>
+
+            <?php else : ?>
+                <form method="get" action="">
+
+                    <div>
+                        <?php if (!empty($jeu->message)): ?>
+                            <p class="msg"><?= $jeu->message ?></p>
+                        <?php endif; ?>
+                        <input type="submit" id="rejouer" name="rejouer" value="Rejouer">
+                    </div>
+                </form>
+                <table>
+                    <thead></thead>
+                    <tbody>
+
+                        <form method="post" action="">
+                            <?php for ($i = 1; $i <= 9; $i++): ?>
+                                <td>
+                                    <p id="case" class="case"><?= $_SESSION['grille'][$i - 1] ?></p>
+                                </td>
+                                <?php if ($i % 3 == 0) : ?>
+                                    <tr>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endfor; ?>
 
 
-                    </form>
-                </tbody>
-            </table>
+                        </form>
+                    </tbody>
+                </table>
 
 
-        <?php endif; ?>
+            <?php endif; ?>
 
-    </section>
-
+        </section>
+    </main>
 </body>
 
 </html>

@@ -6,7 +6,12 @@
 }
 
 body {
+    height: 100vh;
     background-color: #2f2f2f;  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 div {
@@ -78,7 +83,8 @@ span {
     font-weight: bold;
 }
 
-h1 {
+.joueur1,
+.joueur2 {
     font-size: 1.5rem;
 }
 
